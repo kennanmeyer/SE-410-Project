@@ -7,8 +7,10 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
+
 <project name="oStorybook" default="default" basedir=".">
-    <description>Builds, tests, and runs the project Storybook.</description>
+	<property environment="env"/>
+	<description>Builds, tests, and runs the project Storybook.</description>
     <import file="nbproject/build-impl.xml"/>
 	<property name="sb.version" value="4.9.16" />
 	<property name="sb.distdir" value="${basedir}/distrib" />
@@ -185,7 +187,7 @@
             <property name="inst.version" value="${sb.version}"/>
             <property name="nbdist.dir" value="${sb.distdir}/IzPack"/>
             <property name="nbdist-app.dir" value="${nbdist.dir}/oStorybook"/>
-            <property name="izpack.dir" value="${basedir}/../../IzPack"/>
+            <property name="izpack.dir" value="${env.IZPACK}"/>
             <property name="izpack2exe.dir" value="${izpack.dir}/utils/wrappers/izpack2exe"/>
             <property name="izpack.compiler" value="${izpack.dir}/lib/compiler.jar"/>
             <property name="izpack-installer" value="${nbdist.dir}/install.jar"/>
@@ -222,7 +224,7 @@
                     izPackDir="${izpack.dir}/"/>
 
             <echo message="Creating the release ${nbdist-app-installer} ..." level="info"/>
-            <exec dir="${izpack2exe.dir}" executable="python" >
+            <exec dir="${izpack2exe.dir}" executable="${env.PYTHON}/python" >
                 <arg value="izpack2exe.py"/>
                 <arg value="--file=${izpack.output}"/>
                 <arg value="--output=${nbdist-app-installer}"/>
