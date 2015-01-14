@@ -11,7 +11,7 @@
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
 <mapEntry key="ANT_HOME" value="C:\Program Files\eclipse\plugins\org.apache.ant_1.9.2.v201404171502"/>
 <mapEntry key="IZPACK" value="C:\Users\james\Documents\Programs\iZPack"/>
-<mapEntry key="PYTHON" value="C:\Python27\"/>
+<mapEntry key="PYTHON" value="${env_var:PYTHON}"/>
 <mapEntry key="Path" value="${env_var:JAVA_HOME}/bin;${env_var:Path}"/>
 </mapAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
@@ -22,7 +22,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="oStoryBook"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="default,build-app-win,"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_TARGETS" value="build-app-win,"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/oStoryBook/build.xml}"/>
 <stringAttribute key="process_factory_id" value="org.eclipse.ant.ui.remoteAntProcessFactory"/>
 </launchConfiguration>
