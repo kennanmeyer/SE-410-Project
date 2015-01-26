@@ -1,9 +1,11 @@
+# -*- mode: gitignore; -*-
 /dist/
 /nbproject/private/
 /build/
 /distrib/
 /bin/
-# -*- mode: gitignore; -*-
+
+# Emacs
 *~
 \#*\#
 /.emacs.desktop
