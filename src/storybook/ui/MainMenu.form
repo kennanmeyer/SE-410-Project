@@ -2,6 +2,12 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
+    <Component class="javax.swing.JFileChooser" name="fileChooser">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFileChooser()"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="FileFilter ft = new FileNameExtensionFilter(&quot;Text Files&quot;, &quot;txt&quot;);&#xa;fileChooser.addChoosableFileFilter( ft );&#xa;fileChooser.setFileFilter(ft);&#xa;fileChooser.setAcceptAllFileFilterUsed(false);"/>
+      </AuxValues>
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <Properties>
         <Property name="name" type="java.lang.String" value="file-menu-command" noResource="true"/>
@@ -158,6 +164,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Import from Text File"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileImportActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="fileExport">
               <Properties>
