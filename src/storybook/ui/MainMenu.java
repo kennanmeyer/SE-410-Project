@@ -123,6 +123,7 @@ public class MainMenu extends javax.swing.JFrame {
         separatorFile1 = new javax.swing.JPopupMenu.Separator();
         fileProperties = new javax.swing.JMenuItem();
         separatorFile2 = new javax.swing.JPopupMenu.Separator();
+        fileImport = new javax.swing.JMenuItem();
         fileExport = new javax.swing.JMenuItem();
         filePrint = new javax.swing.JMenuItem();
         separatorFile3 = new javax.swing.JPopupMenu.Separator();
@@ -632,6 +633,9 @@ public class MainMenu extends javax.swing.JFrame {
         });
         menuFile.add(fileProperties);
         menuFile.add(separatorFile2);
+
+        fileImport.setText("Import from Text File");
+        menuFile.add(fileImport);
 
         fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         fileExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
@@ -2058,6 +2062,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem fileClose;
     private javax.swing.JMenuItem fileExit;
     private javax.swing.JMenuItem fileExport;
+    private javax.swing.JMenuItem fileImport;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;
     public javax.swing.JMenu fileOpenRecent;
@@ -2191,7 +2196,7 @@ public class MainMenu extends javax.swing.JFrame {
 		}
 		javax.swing.JMenuItem[] submenus={
 			editCopyBlurb, editCopyBook,
-			fileClose, fileExport, filePrint,
+			fileClose, fileExport, filePrint, fileImport,
 			fileProperties, fileRename, fileSave, fileSaveAs
 		};
 		for (javax.swing.JMenuItem m : submenus) {
