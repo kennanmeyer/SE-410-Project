@@ -11,6 +11,11 @@ import com.sun.jaf.ui.ActionManager;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+
+import java.io.File;
+
+import java.util.ArrayList;
+
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -40,6 +45,7 @@ import storybook.model.hbn.entity.TagLink;
 import storybook.toolkit.BookUtil;
 import storybook.toolkit.DockingWindowUtil;
 import storybook.toolkit.I18N;
+import storybook.toolkit.PersonImporter;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
@@ -2008,7 +2014,17 @@ public class MainMenu extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Select Text File to Import");
         int returnVal = fileChooser.showOpenDialog(this);
         if( returnVal == 0){
-            System.out.println("File chosen by user.");
+            String filename = fileChooser.getSelectedFile().getAbsolutePath();
+            File f = new File(filename);
+            if (f.exists() && !f.isDirectory()) {
+                PersonImporter pi = new PersonImporter(filename);
+                ArrayList<ner.Person> ps = pi.getCharacters();
+                for (ner.Person p : ps) {
+                    System.out.println(p);
+                }
+            } else {
+                System.err.printf("File %s doesn't exist\n", filename);
+            }
         } else {
             System.out.println("File access cancelled by user.");
         }
