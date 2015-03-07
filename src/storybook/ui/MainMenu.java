@@ -2018,9 +2018,11 @@ public class MainMenu extends javax.swing.JFrame {
             File f = new File(filename);
             if (f.exists() && !f.isDirectory()) {
                 PersonImporter pi = new PersonImporter(filename);
-                ArrayList<ner.Person> ps = pi.getCharacters();
-                for (ner.Person p : ps) {
-                    System.out.println(p);
+                ArrayList<Person> ps = pi.getCharacters();
+                for (Person p : ps) {
+                    String name = String.format("%s %s", p.getFirstname(), p.getLastname());
+                    String gender = p.getGender().getName();
+                    System.out.printf("Found %s (%s)\n", name, gender);
                 }
             } else {
                 System.err.printf("File %s doesn't exist\n", filename);
