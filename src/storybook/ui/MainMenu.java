@@ -13,6 +13,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import storybook.SbApp;
 import storybook.SbConstants;
@@ -80,6 +82,7 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileChooser = new javax.swing.JFileChooser();
         toolBar = new javax.swing.JToolBar();
         btFileNew = new javax.swing.JButton();
         btFileOpen = new javax.swing.JButton();
@@ -123,6 +126,7 @@ public class MainMenu extends javax.swing.JFrame {
         separatorFile1 = new javax.swing.JPopupMenu.Separator();
         fileProperties = new javax.swing.JMenuItem();
         separatorFile2 = new javax.swing.JPopupMenu.Separator();
+        fileImport = new javax.swing.JMenuItem();
         fileExport = new javax.swing.JMenuItem();
         filePrint = new javax.swing.JMenuItem();
         separatorFile3 = new javax.swing.JPopupMenu.Separator();
@@ -228,6 +232,11 @@ public class MainMenu extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JPopupMenu.Separator();
         helpCheckUpdates = new javax.swing.JMenuItem();
         helpTrace = new javax.swing.JCheckBoxMenuItem();
+
+        FileFilter ft = new FileNameExtensionFilter("Text Files", "txt");
+        fileChooser.addChoosableFileFilter( ft );
+        fileChooser.setFileFilter(ft);
+        fileChooser.setAcceptAllFileFilterUsed(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -632,6 +641,14 @@ public class MainMenu extends javax.swing.JFrame {
         });
         menuFile.add(fileProperties);
         menuFile.add(separatorFile2);
+
+        fileImport.setText("Import from Text File");
+        fileImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileImportActionPerformed(evt);
+            }
+        });
+        menuFile.add(fileImport);
 
         fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         fileExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
@@ -1984,6 +2001,19 @@ public class MainMenu extends javax.swing.JFrame {
         mainFrame.showAndFocus(ViewName.ATTRIBUTES);
     }//GEN-LAST:event_chartsAttributesActionPerformed
 
+    private void fileImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileImportActionPerformed
+        
+
+       
+        fileChooser.setDialogTitle("Select Text File to Import");
+        int returnVal = fileChooser.showOpenDialog(this);
+        if( returnVal == 0){
+            System.out.println("File chosen by user.");
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_fileImportActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -2055,9 +2085,11 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem chartsAttributes;
     private javax.swing.JMenuItem editCopyBlurb;
     private javax.swing.JMenuItem editCopyBook;
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenuItem fileClose;
     private javax.swing.JMenuItem fileExit;
     private javax.swing.JMenuItem fileExport;
+    private javax.swing.JMenuItem fileImport;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;
     public javax.swing.JMenu fileOpenRecent;
@@ -2191,7 +2223,7 @@ public class MainMenu extends javax.swing.JFrame {
 		}
 		javax.swing.JMenuItem[] submenus={
 			editCopyBlurb, editCopyBook,
-			fileClose, fileExport, filePrint,
+			fileClose, fileExport, filePrint, fileImport,
 			fileProperties, fileRename, fileSave, fileSaveAs
 		};
 		for (javax.swing.JMenuItem m : submenus) {
