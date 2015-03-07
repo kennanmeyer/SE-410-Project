@@ -15,7 +15,8 @@ import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.util.Triple;
 
-import ner.Person;
+import storybook.model.hbn.entity.Gender;
+import storybook.model.hbn.entity.Person;
 
 /**
  * The class PersonImporter.
@@ -34,12 +35,26 @@ public class PersonImporter {
     private String filename;
 
     /**
+     * A male gender.
+     */
+    private Gender male;
+
+    /**
+     * A female gender.
+     */
+    private Gender female;
+
+    /**
      * Instantiate a new PersonImporter.
      *
      * @param filename the filename
      */
     public PersonImporter(String filename) {
         this.filename = filename;
+        this.male = new Gender(I18N.getMsg("msg.dlg.person.gender.male"),
+                               12, 6, 47, 14);
+        this.female = new Gender(I18N.getMsg("msg.dlg.person.gender.female"),
+                                 12, 6, 47, 14);
     }
 
     /**
@@ -75,14 +90,15 @@ public class PersonImporter {
                         existingNames.add(nameStr);
 
                         String[] names = nameStr.split(" ");
-                        Person p = new Person(names[0]);
+                        Person p = new Person();
+                        p.setFirstname(names[0]);
                         if (names.length > 1) {
-                            p.setLastName(names[1]);
+                            p.setLastname(names[1]);
                         }
 
-                        NameGender gender = api.getGender(p.getFirstName());
+                        NameGender gender = api.getGender(p.getFirstname());
                         if (gender.getGender() != null) {
-                            p.setGender(gender.getGender());
+                            p.setGender(gender.isMale() ? male : female);
                         } else {
                             p.setGender(getRandomGender());
                         }
@@ -103,10 +119,10 @@ public class PersonImporter {
      *
      * @return a random gender
      */
-    public String getRandomGender() {
+    public Gender getRandomGender() {
         Random rand = new Random();
         int toss = rand.nextInt(2);
 
-        return toss == 0 ? "male" : "female";
+        return toss == 0 ? male : female;
     }
 }
