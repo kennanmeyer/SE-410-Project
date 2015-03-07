@@ -1,5 +1,18 @@
+# -*- mode: gitignore; -*-
+.DS_Store
+
 /dist/
 /nbproject/private/
 /build/
 /distrib/
 /bin/
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*

@@ -11,8 +11,15 @@ import com.sun.jaf.ui.ActionManager;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+
+import java.io.File;
+
+import java.util.ArrayList;
+
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import storybook.SbApp;
 import storybook.SbConstants;
@@ -38,6 +45,7 @@ import storybook.model.hbn.entity.TagLink;
 import storybook.toolkit.BookUtil;
 import storybook.toolkit.DockingWindowUtil;
 import storybook.toolkit.I18N;
+import storybook.toolkit.PersonImporter;
 import storybook.toolkit.net.NetUtil;
 import storybook.toolkit.net.Updater;
 import storybook.toolkit.swing.SwingUtil;
@@ -80,6 +88,7 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileChooser = new javax.swing.JFileChooser();
         toolBar = new javax.swing.JToolBar();
         btFileNew = new javax.swing.JButton();
         btFileOpen = new javax.swing.JButton();
@@ -123,6 +132,7 @@ public class MainMenu extends javax.swing.JFrame {
         separatorFile1 = new javax.swing.JPopupMenu.Separator();
         fileProperties = new javax.swing.JMenuItem();
         separatorFile2 = new javax.swing.JPopupMenu.Separator();
+        fileImport = new javax.swing.JMenuItem();
         fileExport = new javax.swing.JMenuItem();
         filePrint = new javax.swing.JMenuItem();
         separatorFile3 = new javax.swing.JPopupMenu.Separator();
@@ -228,6 +238,11 @@ public class MainMenu extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JPopupMenu.Separator();
         helpCheckUpdates = new javax.swing.JMenuItem();
         helpTrace = new javax.swing.JCheckBoxMenuItem();
+
+        FileFilter ft = new FileNameExtensionFilter("Text Files", "txt");
+        fileChooser.addChoosableFileFilter( ft );
+        fileChooser.setFileFilter(ft);
+        fileChooser.setAcceptAllFileFilterUsed(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -632,6 +647,14 @@ public class MainMenu extends javax.swing.JFrame {
         });
         menuFile.add(fileProperties);
         menuFile.add(separatorFile2);
+
+        fileImport.setText("Import from Text File");
+        fileImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileImportActionPerformed(evt);
+            }
+        });
+        menuFile.add(fileImport);
 
         fileExport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         fileExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/storybook/resources/icons/16x16/export.png"))); // NOI18N
@@ -1984,6 +2007,31 @@ public class MainMenu extends javax.swing.JFrame {
         mainFrame.showAndFocus(ViewName.ATTRIBUTES);
     }//GEN-LAST:event_chartsAttributesActionPerformed
 
+    private void fileImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileImportActionPerformed
+        
+
+       
+        fileChooser.setDialogTitle("Select Text File to Import");
+        int returnVal = fileChooser.showOpenDialog(this);
+        if( returnVal == 0){
+            String filename = fileChooser.getSelectedFile().getAbsolutePath();
+            File f = new File(filename);
+            if (f.exists() && !f.isDirectory()) {
+                PersonImporter pi = new PersonImporter(filename);
+                ArrayList<Person> ps = pi.getCharacters();
+                for (Person p : ps) {
+                    String name = String.format("%s %s", p.getFirstname(), p.getLastname());
+                    String gender = p.getGender().getName();
+                    System.out.printf("Found %s (%s)\n", name, gender);
+                }
+            } else {
+                System.err.printf("File %s doesn't exist\n", filename);
+            }
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_fileImportActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -2055,9 +2103,11 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem chartsAttributes;
     private javax.swing.JMenuItem editCopyBlurb;
     private javax.swing.JMenuItem editCopyBook;
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenuItem fileClose;
     private javax.swing.JMenuItem fileExit;
     private javax.swing.JMenuItem fileExport;
+    private javax.swing.JMenuItem fileImport;
     private javax.swing.JMenuItem fileNew;
     private javax.swing.JMenuItem fileOpen;
     public javax.swing.JMenu fileOpenRecent;
@@ -2191,7 +2241,7 @@ public class MainMenu extends javax.swing.JFrame {
 		}
 		javax.swing.JMenuItem[] submenus={
 			editCopyBlurb, editCopyBook,
-			fileClose, fileExport, filePrint,
+			fileClose, fileExport, filePrint, fileImport,
 			fileProperties, fileRename, fileSave, fileSaveAs
 		};
 		for (javax.swing.JMenuItem m : submenus) {

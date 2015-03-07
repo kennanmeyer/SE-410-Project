@@ -119,5 +119,27 @@
 	<classpathentry kind="lib" path="lib/tika-core-0.9.jar"/>
 	<classpathentry kind="lib" path="lib/xjavadoc-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/xml-actions.jar"/>
+	<classpathentry kind="lib" path="lib/jgenderize-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-ner.jar"/>
+    <classpathentry kind="lib" path="lib/aopalliance-repackaged-2.4.0-b06.jar"/>
+    <classpathentry kind="lib" path="lib/hamcrest-core-1.1.jar"/>
+    <classpathentry kind="lib" path="lib/hk2-api-2.4.0-b06.jar"/>
+    <classpathentry kind="lib" path="lib/hk2-locator-2.4.0-b06.jar"/>
+    <classpathentry kind="lib" path="lib/hk2-utils-2.4.0-b06.jar"/>
+    <classpathentry kind="lib" path="lib/javassist-3.18.1-GA.jar"/>
+    <classpathentry kind="lib" path="lib/javax.annotation-api-1.2.jar"/>
+    <classpathentry kind="lib" path="lib/javax.inject-2.4.0-b06.jar"/>
+    <classpathentry kind="lib" path="lib/javax.ws.rs-api-2.0.1.jar"/>
+    <classpathentry kind="lib" path="lib/jersey-client-2.15.jar"/>
+    <classpathentry kind="lib" path="lib/jersey-common-2.15.jar"/>
+    <classpathentry kind="lib" path="lib/jersey-entity-filtering-2.15.jar"/>
+    <classpathentry kind="lib" path="lib/jersey-guava-2.15.jar"/>
+    <classpathentry kind="lib" path="lib/jersey-media-moxy-2.15.jar"/>
+    <classpathentry kind="lib" path="lib/junit-4.10.jar"/>
+    <classpathentry kind="lib" path="lib/org.eclipse.persistence.antlr-2.5.0.jar"/>
+    <classpathentry kind="lib" path="lib/org.eclipse.persistence.asm-2.5.0.jar"/>
+    <classpathentry kind="lib" path="lib/org.eclipse.persistence.core-2.5.0.jar"/>
+    <classpathentry kind="lib" path="lib/org.eclipse.persistence.moxy-2.5.0.jar"/>
+    <classpathentry kind="lib" path="lib/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
