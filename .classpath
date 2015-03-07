@@ -120,6 +120,6 @@
 	<classpathentry kind="lib" path="lib/xjavadoc-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/xml-actions.jar"/>
 	<classpathentry kind="lib" path="lib/jgenderize-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/stanford-ner-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/stanford-ner.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
