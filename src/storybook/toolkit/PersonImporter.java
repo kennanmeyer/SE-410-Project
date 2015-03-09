@@ -53,8 +53,10 @@ public class PersonImporter {
         this.filename = filename;
         this.male = new Gender(I18N.getMsg("msg.dlg.person.gender.male"),
                                12, 6, 47, 14);
+        this.male.setId((long) 1);
         this.female = new Gender(I18N.getMsg("msg.dlg.person.gender.female"),
                                  12, 6, 47, 14);
+        this.female.setId((long)2);
     }
 
     /**
