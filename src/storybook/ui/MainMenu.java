@@ -9,6 +9,7 @@ package storybook.ui;
 import com.sun.jaf.ui.ActionManager;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -21,6 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -2298,10 +2300,13 @@ public class MainMenu extends javax.swing.JFrame {
 				
 				JTextArea charactersTextArea = new JTextArea(pout);
 				charactersTextArea.setEditable(false);
-				charactersTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				JScrollPane charactersScrollPane = new JScrollPane(charactersTextArea);
+				charactersScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				charactersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				charactersScrollPane.setPreferredSize(new Dimension(400, 600));
 				final JComponent[] inputs = new JComponent[] {
 						new JLabel("Import the following characters?"),
-						charactersTextArea,
+						charactersScrollPane,
 				};
 				
 				int importChars = JOptionPane.showConfirmDialog(this, inputs, "Confirm Character Import", JOptionPane.YES_NO_OPTION);
