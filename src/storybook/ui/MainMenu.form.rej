@@ -1,0 +1,11 @@
+diff a/src/storybook/ui/MainMenu.form b/src/storybook/ui/MainMenu.form	(rejected hunks)
+@@ -164,6 +164,9 @@
+               <Properties>
+                 <Property name="text" type="java.lang.String" value="Import from Text File"/>
+               </Properties>
++              <Events>
++                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileImportActionPerformed"/>
++              </Events>
+             </MenuItem>
+             <MenuItem class="javax.swing.JMenuItem" name="fileExport">
+               <Properties>

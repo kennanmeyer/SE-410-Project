@@ -8,6 +8,7 @@ package storybook.ui;
 
 import com.sun.jaf.ui.ActionManager;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -15,7 +16,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -2280,18 +2287,34 @@ public class MainMenu extends javax.swing.JFrame {
 			if (f.exists() && !f.isDirectory()) {
 				PersonImporter pi = new PersonImporter(filename);
 				ArrayList<Person> ps = pi.getCharacters();
+				
+				String pout = "";
 				for (Person p : ps) {
-					
-					//we can comment this out when submitting the application
-					String name = String.format("%s %s", p.getFirstname(),
-							p.getLastname());
+					String name = String.format("%s %s", p.getFirstname(), p.getLastname());
 					String gender = p.getGender().getName();
-					System.out.printf("Found %s (%s)\n", name, gender);
-
-					//do the import for current person
-					importPerson(p);
+					pout = pout.concat(name + " - " + gender + "\n");
 				}
-				System.out.println("importing finished");
+				pout = (pout == "") ? pout : pout.substring(0, pout.length() - 1); // removes the last newline
+				
+				JTextArea charactersTextArea = new JTextArea(pout);
+				charactersTextArea.setEditable(false);
+				charactersTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				final JComponent[] inputs = new JComponent[] {
+						new JLabel("Import the following characters?"),
+						charactersTextArea,
+				};
+				
+				int importChars = JOptionPane.showConfirmDialog(this, inputs, "Confirm Character Import", JOptionPane.YES_NO_OPTION);
+				if (importChars == JOptionPane.YES_OPTION) {
+					for (Person p : ps) {
+						importPerson(p);
+					}
+					
+					System.out.println("importing finished");
+				}
+				else { 
+					System.out.println("importing cancelled"); 
+				}
 			} else {
 				System.err.printf("File %s doesn't exist\n", filename);
 			}
