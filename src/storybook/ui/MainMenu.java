@@ -6,25 +6,24 @@
 
 package storybook.ui;
 
-import com.sun.jaf.ui.ActionManager;
-
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -35,7 +34,6 @@ import storybook.action.LangToolAction;
 import storybook.controller.BookController;
 import storybook.export.BookExporter;
 import storybook.export.DlgExport;
-import storybook.model.EntityUtil;
 import storybook.model.hbn.entity.AbstractEntity;
 import storybook.model.hbn.entity.Category;
 import storybook.model.hbn.entity.Chapter;
@@ -68,7 +66,8 @@ import storybook.ui.dialog.rename.RenameCityDialog;
 import storybook.ui.dialog.rename.RenameCountryDialog;
 import storybook.ui.dialog.rename.RenameItemCategoryDialog;
 import storybook.ui.dialog.rename.RenameTagCategoryDialog;
-import storybook.ui.edit.EntityEditor;
+
+import com.sun.jaf.ui.ActionManager;
 
 /**
  *
@@ -2278,47 +2277,85 @@ public class MainMenu extends javax.swing.JFrame {
 		BookController ctrl = mainFrame.getBookController();
 		ctrl.newPerson(person);
 	}
+	
+	private void importProcess(String filename){
+		PersonImporter pi = new PersonImporter(filename);
+		ArrayList<Person> ps = pi.getCharacters();
+		
+		String pout = "";
+		for (Person p : ps) {
+			String name = String.format("%s %s", p.getFirstname(), p.getLastname());
+			String gender = p.getGender().getName();
+			pout = pout.concat(name + " - " + gender + "\n");
+		}
+		pout = (pout == "") ? pout : pout.substring(0, pout.length() - 1); // removes the last newline
+		
+		JTextArea charactersTextArea = new JTextArea(pout);
+		charactersTextArea.setEditable(false);
+		JScrollPane charactersScrollPane = new JScrollPane(charactersTextArea);
+		charactersScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		charactersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		charactersScrollPane.setPreferredSize(new Dimension(400, 600));
+		final JComponent[] inputs = new JComponent[] {
+				new JLabel("Import the following characters?"),
+				charactersScrollPane,
+		};
+		
+		int importChars = JOptionPane.showConfirmDialog(this, inputs, "Confirm Character Import", JOptionPane.YES_NO_OPTION);
+		if (importChars == JOptionPane.YES_OPTION) {
+			for (Person p : ps) {
+				importPerson(p);
+			}
+			
+			System.out.println("importing finished");
+		}
+		else { 
+			System.out.println("importing cancelled"); 
+		}
+	}
 
 	private void fileImportActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_fileImportActionPerformed
 
 		fileChooser.setDialogTitle("Select Text File to Import");
+		String waits[] = {"please wait.","please wait..","please wait..."};
 		int returnVal = fileChooser.showOpenDialog(this);
 		if (returnVal == 0) {
-			String filename = fileChooser.getSelectedFile().getAbsolutePath();
+			final String filename = fileChooser.getSelectedFile().getAbsolutePath();
 			File f = new File(filename);
 			if (f.exists() && !f.isDirectory()) {
-				PersonImporter pi = new PersonImporter(filename);
-				ArrayList<Person> ps = pi.getCharacters();
+				final JDialog progress = new JDialog(mainFrame);
+				JPanel panel = new JPanel(new BorderLayout());
+				JLabel label = new JLabel(waits[0]);
+				panel.add(label);
+				progress.getContentPane().add(panel);
+				progress.setUndecorated(false);
+				progress.pack();
+				progress.setLocationRelativeTo(mainFrame);
+				progress.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+				progress.setModal(true);
 				
-				String pout = "";
-				for (Person p : ps) {
-					String name = String.format("%s %s", p.getFirstname(), p.getLastname());
-					String gender = p.getGender().getName();
-					pout = pout.concat(name + " - " + gender + "\n");
-				}
-				pout = (pout == "") ? pout : pout.substring(0, pout.length() - 1); // removes the last newline
-				
-				JTextArea charactersTextArea = new JTextArea(pout);
-				charactersTextArea.setEditable(false);
-				JScrollPane charactersScrollPane = new JScrollPane(charactersTextArea);
-				charactersScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				charactersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				charactersScrollPane.setPreferredSize(new Dimension(400, 600));
-				final JComponent[] inputs = new JComponent[] {
-						new JLabel("Import the following characters?"),
-						charactersScrollPane,
-				};
-				
-				int importChars = JOptionPane.showConfirmDialog(this, inputs, "Confirm Character Import", JOptionPane.YES_NO_OPTION);
-				if (importChars == JOptionPane.YES_OPTION) {
-					for (Person p : ps) {
-						importPerson(p);
+				SwingWorker<String, Void> sworker = new SwingWorker<String, Void>() {
+					@Override
+					protected String doInBackground() throws Exception {
+						importProcess(filename);
+						return null;
 					}
 					
-					System.out.println("importing finished");
-				}
-				else { 
-					System.out.println("importing cancelled"); 
+					@Override 
+					protected void done(){
+						progress.dispose();
+					}
+				};
+				sworker.execute();
+				progress.setVisible(true);
+				try {
+					sworker.get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			} else {
 				System.err.printf("File %s doesn't exist\n", filename);
